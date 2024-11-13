@@ -1,0 +1,161 @@
+1 Задача
+#include <iostream>
+using namespace std;
+
+int main() {
+    double k; 
+    double p; 
+    double r;
+
+    cout << "Введите сумму кредита (k): ";
+    cin >> k;
+    cout << "Введите процентную ставку (p): ";
+    cin >> p;
+    cout << "Введите ежегодную прибыль (r): ";
+    cin >> r;
+
+    double totalDebt = k; 
+    double totalProfit = 0; 
+    int years = 0; 
+
+    double interestRate = p / 100;
+
+    // Цикл, который будет выполняться, пока общая прибыль меньше общей суммы долга
+    while (totalProfit < totalDebt) {
+        years++;
+        totalProfit += r; // добавляем ежегодную прибыль
+        totalDebt += totalDebt * interestRate; // увеличиваем долг на проценты
+
+        // Выводим информацию о текущем состоянии
+        cout << "Год " << years << ": Общая прибыль = " << totalProfit 
+             << ", Общий долг = " << totalDebt << endl;
+    }
+
+    cout << "Предприниматель сможет погасить кредит через " << years << " лет." << endl;
+
+    return 0;
+}
+2 Задача
+#include <iostream>
+using namespace std;
+
+int main() {
+    int time1, time2, time3;
+    int totalProcessingTime = 0; 
+
+    cout << "Введите время обработки каждой детали на трех станках (группами по 3 числа). Введите -1 для завершения ввода:" << endl;
+
+    while (true) {
+        cin >> time1 >> time2 >> time3;
+
+        if (time1 == -1 || time2 == -1 || time3 == -1) {
+            break;
+        }
+
+        totalProcessingTime += (time1 + time2 + time3);
+    }
+
+    cout << "Общее время обработки всех деталей: " << totalProcessingTime << " единиц времени." << endl;
+
+    return 0;
+}
+3 Задача
+#include <iostream>
+using namespace std;
+
+int main() {
+    int T; // Продолжительность смены
+    cout << "Введите продолжительность смены (T): ";
+    cin >> T;
+
+    int t, l; // t - момент прихода, l - продолжительность обслуживания
+    int totalClients = 0; // Количество обслуженных клиентов
+    int totalServiceTime = 0; // Общее время обслуживания
+    int currentTime = 0; // Текущее время
+
+    cout << "Введите момент прихода (t) и продолжительность обслуживания (l) для каждого клиента." << endl;
+    cout << "Введите -1 для завершения ввода." << endl;
+
+    while (true) {
+        cin >> t >> l;
+
+        if (t == -1 || l == -1) {
+            break;
+        }
+
+        if (t >= currentTime && (currentTime + l) <= T) {
+            totalClients++; // Увеличиваем счетчик обслуженных клиентов
+            totalServiceTime += l; // Добавляем время обслуживания
+            currentTime += l; // Обновляем текущее время
+        } else {
+            cout << "Клиент не может быть обслужен (время не подходит)." << endl;
+        }
+    }
+    cout << "Количество обслуженных клиентов: " << totalClients << endl;
+    cout << "Общее время, потраченное на обслуживание: " << totalServiceTime << " единиц времени." << endl;
+
+    return 0;
+}
+4 Задача
+#include <iostream>
+using namespace std;
+
+int main() {
+    // Ввод данных
+    double u, v, w; // Суточный рацион на одну корову (сено, силос, комбикорм)
+    int k; // Количество коров
+    double s, t, f; // Остатки кормов (сено, силос, комбикорм)
+    double p, q, r, l; // Проценты (погибшие коровы, гниение сена, разворовывание силоса, распродажа комбикорма)
+
+    cout << "Введите суточный рацион (сено, силос, комбикорм): ";
+    cin >> u >> v >> w;
+    cout << "Введите количество коров (k): ";
+    cin >> k;
+    cout << "Введите остатки кормов (сено, силос, комбикорм): ";
+    cin >> s >> t >> f;
+    cout << "Введите проценты (погибшие коровы, гниение сена, разворовывание силоса, распродажа комбикорма): ";
+    cin >> p >> q >> r >> l;
+
+    double deathRate = p / 100;
+    double rotRate = q / 100;
+    double theftRate = r / 100;
+    double saleRate = l / 100;
+
+    // Переменные для отслеживания состояния
+    int days = 0; // Количество дней
+    double remainingCows = k; // Оставшиеся коровы
+
+    // Цикл, который продолжается, пока есть корм
+    while (s >= remainingCows * u && t >= remainingCows * v && f >= remainingCows * w) {
+        // Уменьшаем количество кормов
+        s -= remainingCows * u; // Сено
+        t -= remainingCows * v; // Силос
+        f -= remainingCows * w; // Комбикорм
+
+        // Увеличиваем количество дней
+        days++;
+
+        // Обновляем количество оставшихся коров
+        remainingCows *= (1 - deathRate);
+
+        // Обновляем остатки кормов
+        s *= (1 - rotRate); // Сено
+        t *= (1 - theftRate); // Силос
+        f *= (1 - saleRate); // Комбикорм
+    }
+
+    // Определяем, какой корм закончится первым
+    string feedOut = "Неизвестно";
+    if (s < remainingCows * u) {
+        feedOut = "Сено";
+    } else if (t < remainingCows * v) {
+        feedOut = "Силос";
+    } else if (f < remainingCows * w) {
+        feedOut = "Комбикорм";
+    }
+
+    cout << "Кормить всех оставшихся коров по полному рациону нельзя будет через " << days << " дней." << endl;
+    cout << "Первым закончится: " << feedOut << "." << endl;
+
+    return 0;
+}
